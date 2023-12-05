@@ -4,16 +4,16 @@
 good=0
 bad=0
 
-# Pętla przez każdy plik .wav w katalogu 'train'
+# Iterating through all files in train folder
 for file in train/*.wav; do
   # Uruchom skrypt Python i przechwyć jego wyjście
   output=$(python3 main.py "$file")
 
-  # Pobierz literę (M/K) z nazwy pliku
+  # Get letter M/K from file name
   filename=$(basename "$file")
   label=${filename: -5:1}
 
-  # Porównaj wynik skryptu z literą w nazwie pliku i zaktualizuj liczniki
+  # Compare taken letter with programme output and increase counter
   if [ "$output" = "$label" ]; then
     ((good++))
   else
@@ -21,17 +21,17 @@ for file in train/*.wav; do
   fi
 done
 
-# Obliczanie całkowitej liczby plików
+# total number of files
 total=$((good + bad))
 
-# Obliczanie skuteczności w procentach
+# Counting accuracy
 if [ $total -gt 0 ]; then
   accuracy=$(echo "scale=2; $good / $total * 100" | bc)
 else
   accuracy=0
 fi
 
-# Wyświetl wyniki
+# Printing results
 echo "Poprawne rozpoznania: $good"
 echo "Niepoprawne rozpoznania: $bad"
 echo "Skuteczność programu: $accuracy%"
